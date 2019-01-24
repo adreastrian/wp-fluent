@@ -663,6 +663,9 @@ Manual Installation:
 = Which PHP version does it required? =
 At least PHP 5.4 is required.
 
+= Where do I report bugs and request features?
+For anything please use [github repository](https://github.com/adreastrian/wp-fluent).
+
 == Screenshots ==
 
 = 1.0.0 =
