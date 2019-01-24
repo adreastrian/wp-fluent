@@ -41,8 +41,7 @@ After the code below, every time a select query occurs on `posts` table,
 it will add this where criteria, so drafted posts don't surface.
 
 ```PHP
-DB::registerEvent('before-select', 'posts', function($qb)
-{
+DB::registerEvent('before-select', 'posts', function ($qb) {
     $qb->where('psot_status', '!=', 'draft');
 });
 ```
@@ -620,7 +619,7 @@ Here are some cases where Query Events can be extremely helpful:
  inserts into `table_b`, now you can have another event registered with `table_b` 
  which inserts into `table_c`.
  - Of course Query Events don't work with raw queries.
- - This is forked from awesome @uusmanhalalit vai's [Pixie](https://github.com/usmanhalalit/pixie)
- and modified to support WordPress.
+ - **This is forked from awesome @usmanhalalit vai's [Pixie](https://github.com/usmanhalalit/pixie)
+ and modified to support WordPress.**
 
 ___
