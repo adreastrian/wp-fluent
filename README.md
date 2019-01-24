@@ -1,17 +1,3 @@
-=== WP Fluent ===
-Contributors: adreastrian
-Tags: query builder, fluent wpdb, database, mysql, fluent
-Requires at least: 4.8
-Requires PHP: 5.4
-Tested up to: 5.0
-Stable tag: trunk
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
-
-Database query builder for WordPress, lightweight and expressive. 
-
-== Description ==
-
 A lightweight, expressive database query builder for WordPress which can be referred to as a Database Abstraction Layer. WP Fluent uses the same **wpdb** instance and takes care of query sanitization, table prefixing and many other things with a unified API.
 
 It has some advanced features like:
@@ -634,36 +620,7 @@ Here are some cases where Query Events can be extremely helpful:
  inserts into `table_b`, now you can have another event registered with `table_b` 
  which inserts into `table_c`.
  - Of course Query Events don't work with raw queries.
+ - This is forked from awesome @uusmanhalalit vai's [Pixie](https://github.com/usmanhalalit/pixie)
+ and modified to support WordPress.
 
 ___
-
-== Installation ==
-
-This section describes how to install the plugin and get it working.
-
-Install From WordPress Admin Panel:
-
-1. Login to your WordPress Admin Area
-2. Go to Plugins -> Add New
-3. Type "**WP Fluent**" into the Search and hit Enter.
-4. Find this plugin Click "install now"
-5. Activate The Plugin
-6. Use **WP Fluent** from your plugins or theme's function.php file.
-
-Manual Installation:
-
-1. Download the plugin from WordPress.org repository
-2. On your WordPress admin dashboard, go to ‘Plugins -> Add New -> Upload Plugin’
-3. Upload the downloaded plugin file (WPFluent.zip) and click ‘Install Now’
-4. Activate ‘**WP Fluent**’ from your Plugins page.
-5. Use **WP Fluent** from your plugins or theme's function.php file.
-
-== Frequently Asked Questions ==
-
-= Which PHP version does it required? =
-At least PHP 5.4 is required.
-
-== Screenshots ==
-
-= 1.0.0 =
-- Init first version
