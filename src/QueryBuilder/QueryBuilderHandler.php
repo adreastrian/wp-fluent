@@ -100,7 +100,8 @@ class QueryBuilderHandler
      */
     public function asObject($className, $constructorArgs = array())
     {
-        var_dump('need to implement this'); die();
+        var_dump('need to implement this');
+        die();
 
         return $this->setFetchMode(\PDO::FETCH_CLASS, $className, $constructorArgs);
     }
@@ -282,7 +283,7 @@ class QueryBuilderHandler
         }
 
         $queryArr = $this->adapterInstance->$type($this->statements, $dataToBePassed);
-        
+
         return  $this->container->build(
             '\\WpFluent\\QueryBuilder\\QueryObject',
             array($queryArr['sql'], $queryArr['bindings'])
@@ -689,7 +690,9 @@ class QueryBuilderHandler
      */
     public function whereIn($key, $values)
     {
-        return $this->whereHandler($key, 'IN', $values, 'AND');
+        return $this->when($values, function ($query, $values) use ($key) {
+            return $query->whereHandler($key, 'IN', $values, 'AND');
+        });
     }
 
     /**
@@ -700,7 +703,9 @@ class QueryBuilderHandler
      */
     public function whereNotIn($key, $values)
     {
-        return $this->whereHandler($key, 'NOT IN', $values, 'AND');
+        return $this->when($values, function ($query, $values) use ($key) {
+            return $query->whereHandler($key, 'NOT IN', $values, 'AND');
+        });
     }
 
     /**
@@ -711,7 +716,9 @@ class QueryBuilderHandler
      */
     public function orWhereIn($key, $values)
     {
-        return $this->whereHandler($key, 'IN', $values, 'OR');
+        return $this->when($values, function ($query, $values) use ($key) {
+            return $query->whereHandler($key, 'IN', $values, 'OR');
+        });
     }
 
     /**
@@ -722,7 +729,9 @@ class QueryBuilderHandler
      */
     public function orWhereNotIn($key, $values)
     {
-        return $this->whereHandler($key, 'NOT IN', $values, 'OR');
+        return $this->when($values, function ($query, $values) use ($key) {
+            return $query->whereHandler($key, 'NOT IN', $values, 'OR');
+        });
     }
 
     /**
