@@ -95,7 +95,7 @@ ___
 
 
 ## Connection
-WP Fluent supports multiple database connections but you can use alias 
+WP Fluent supports multiple database connections but you can use alias
 for only one connection at a time. Just pass the global wpdb and
 necessary configurations during connection.
 
@@ -120,12 +120,12 @@ When you create a connection:
 new \WpFluent\Connection($wpdb, ['prefix' => $wpdb->prefix], 'MyAlias');
 ```
 `MyAlias` is the name for the class alias you want to use e.g. `MyAlias::table(...)`
- 
+
 You can use any name (with Namespace also, `MyNamespace\\MyClass`) you like or
 you may skip it if you don't need an alias. Alias gives you the ability
 to easily access the QueryBuilder class across your application.
 
-When not using an alias you can instantiate the QueryBuilder handler 
+When not using an alias you can instantiate the QueryBuilder handler
 separately, helpful for Dependency Injection and Testing.
 
 ```PHP
@@ -152,7 +152,7 @@ The query below returns the first row where id = 3, `null` if no rows.
 ```PHP
 $row = DB::table('my_table')->find(3);
 ```
-Access your row like, `echo $row->name`. If your field name is not `id` then 
+Access your row like, `echo $row->name`. If your field name is not `id` then
 pass the field name as second parameter `DB::table('my_table')->find(3, 'person_id');`
 
 The query below returns all the rows where `name = 'Frost'`, `null` if no rows.
@@ -173,7 +173,7 @@ $query = DB::table('my_table')->select('*');
 ->select(array('mytable.myfield1', 'mytable.myfield2', 'another_table.myfield3'));
 ```
 
-Using select method multiple times `select('a')->select('b')` will also select `a` 
+Using select method multiple times `select('a')->select('b')` will also select `a`
 and `b`. It can be useful if you want to do conditional selects (within a PHP `if`).
 
 
@@ -200,6 +200,20 @@ foreach ($result as $row) {
 ```PHP
 $query = DB::table('my_table')->where('name', '=', 'admin');
 $row = $query->first();
+```
+Returns the first row, or `null` if there is no record. Using this method you can also
+make sure if a record exists. Access it like `$row->name`
+
+
+#### Chunk large tables
+```PHP
+$file = fopen("php://output", 'w');
+$query = DB::table('my_table')->chunk(100, function ($records) use ($file) {
+	foreach($records as $record) {
+		fputcsv($file, $record);
+	}
+});
+fclose($file);
 ```
 Returns the first row, or `null` if there is no record. Using this method you can also
 make sure if a record exists. Access it like `$row->name`
@@ -262,7 +276,7 @@ DB::table('my_table')
     ->where('my_table.age', 10)
     ->where(function ($q) {
         $q->where('name', 'LIKE', '%najrul%');
-        
+
         // You can provide a closure on these wheres too, to nest further.
         $q->orWhere('description', 'LIKE', '%frost%');
     });
@@ -485,7 +499,7 @@ $queryObj->getRawSql();
 ```
 
 ### Sub Queries and Nested Queries
-Rarely but you may need to run sub queries or nested queries. WP Fluent is powerful 
+Rarely but you may need to run sub queries or nested queries. WP Fluent is powerful
 enough to do this for you. You can create different query objects and use the
 `DB::subQuery()` method.
 
@@ -543,7 +557,7 @@ so banned users don't get access.
 
 The syntax is `registerEvent('event type', 'table name', action in a closure)`.
 
-If you want the event to be performed when **any table is being queried**, provide 
+If you want the event to be performed when **any table is being queried**, provide
 `':any'` as table name.
 
 **Other examples:**
@@ -552,12 +566,12 @@ After inserting data into `my_table`, details will be inserted into another tabl
 ```PHP
 DB::registerEvent('after-insert', 'my_table', function ($queryBuilder, $insertId) {
     $data = array('person_id' => $insertId, 'details' => 'Meh', 'age' => 5);
-    
+
     $queryBuilder->table('person_details')->insert($data);
 });
 ```
 
-Whenever data is inserted into `person_details` table, set the timestamp field 
+Whenever data is inserted into `person_details` table, set the timestamp field
 `created_at`, so we don't have to specify it everywhere:
 ```PHP
 DB::registerEvent('after-insert', 'person_details', function ($queryBuilder, $insertId) {
@@ -573,21 +587,21 @@ After deleting from `my_table` delete the relations:
 ```PHP
 DB::registerEvent('after-delete', 'my_table', function ($queryBuilder, $queryObject) {
     $bindings = $queryObject->getBindings();
-    
+
     $queryBuilder->table('person_details')->where('person_id', $binding[0])->delete();
 });
 ```
 
 
 WP Fluent passes the current instance of query builder as first parameter of your
-closure so you can build queries with this object, you can do anything like usual 
+closure so you can build queries with this object, you can do anything like usual
 query builder (`DB`).
 
 If something other than `null` is returned from the `before-*` query handler, the value
 will be result of execution and DB will not be actually queried (and thus, corresponding
 `after-*` handler will not be called either).
 
-Only on `after-*` events you get three parameters: **first** is the query builder, 
+Only on `after-*` events you get three parameters: **first** is the query builder,
 **third** is the execution time as float and **the second** varies:
 
  - On `after-select` you get the `results` obtained from `select`.
@@ -615,8 +629,8 @@ Here are some cases where Query Events can be extremely helpful:
  - Add/edit created_at and updated _at data after each entry.
 
 #### Notes
- - Query Events go recursively, for example after inserting into `table_a` your event 
- inserts into `table_b`, now you can have another event registered with `table_b` 
+ - Query Events go recursively, for example after inserting into `table_a` your event
+ inserts into `table_b`, now you can have another event registered with `table_b`
  which inserts into `table_c`.
  - Of course Query Events don't work with raw queries.
  - **This is forked from awesome @usmanhalalit vai's [Pixie](https://github.com/usmanhalalit/pixie)

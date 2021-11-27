@@ -100,7 +100,8 @@ class QueryBuilderHandler
      */
     public function asObject($className, $constructorArgs = array())
     {
-        var_dump('need to implement this'); die();
+        var_dump('need to implement this');
+        die();
 
         return $this->setFetchMode(\PDO::FETCH_CLASS, $className, $constructorArgs);
     }
@@ -282,7 +283,7 @@ class QueryBuilderHandler
         }
 
         $queryArr = $this->adapterInstance->$type($this->statements, $dataToBePassed);
-        
+
         return  $this->container->build(
             '\\WpFluent\\QueryBuilder\\QueryObject',
             array($queryArr['sql'], $queryArr['bindings'])
@@ -1150,5 +1151,27 @@ class QueryBuilderHandler
         }
 
         return $this;
+    }
+
+    /**
+     * Chunk query by given no of records and apply the callback with the records
+     *
+     * @param int $limit
+     * @param callable $callback
+
+     * @return mixed
+     */
+    public function chunk($limit, $callback, $page = 1)
+    {
+        $offset = ($page - 1) * $limit;
+        $this->limit($limit)->offset($offset);
+
+        $records = $this->get();
+        if (count($records)) {
+            $callback($records);
+            return $this->chunk($limit, $callback, ++$page);
+        }
+
+        return $page;
     }
 }
