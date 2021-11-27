@@ -60,6 +60,7 @@ There are so many advanced options documented below. Sold? Let's install.
     - [Multiple Selects](#multiple-selects)
     - [Select Distinct](#select-distinct)
     - [Get All](#get-all)
+    - [Chunk](#chunk)
     - [Get First Row](#get-first-row)
     - [Get Rows Count](#get-rows-count)
  - [**Where**](#where)
@@ -196,16 +197,10 @@ foreach ($result as $row) {
 }
 ```
 
-#### Get First Row
-```PHP
-$query = DB::table('my_table')->where('name', '=', 'admin');
-$row = $query->first();
-```
-Returns the first row, or `null` if there is no record. Using this method you can also
-make sure if a record exists. Access it like `$row->name`
+#### Chunk
+What if you have thousands of rows in your database? Using [Get All](#get-all), can fill your memory up when you load all that data.
+Here is the chunk mehtod. You can provide a number of rows to fetch at once, and a callback to run on the result.
 
-
-#### Chunk large tables
 ```PHP
 $file = fopen("php://output", 'w');
 $query = DB::table('my_table')->chunk(100, function ($records) use ($file) {
@@ -214,6 +209,12 @@ $query = DB::table('my_table')->chunk(100, function ($records) use ($file) {
 	}
 });
 fclose($file);
+```
+
+#### Get First Row
+```PHP
+$query = DB::table('my_table')->where('name', '=', 'admin');
+$row = $query->first();
 ```
 Returns the first row, or `null` if there is no record. Using this method you can also
 make sure if a record exists. Access it like `$row->name`
