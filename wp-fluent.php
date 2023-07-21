@@ -15,11 +15,11 @@ Domain Path: /resources/languages
 // Autoload plugin.
 require 'autoload.php';
 
-if (! function_exists('wpFluent')) {
+if (! function_exists('wpFluentDB')) {
     /**
      * @return \WpFluent\QueryBuilder\QueryBuilderHandler
      */
-    function wpFluent() {
+    function wpFluentDB() {
         static $wpFluent;
 
         if (! $wpFluent) {

@@ -23,10 +23,12 @@ It has some advanced features like:
 
 The syntax is quite similar to Laravel's query builder.
 
+**Notice:** The global function to access the query builder instance has been changed. You must replace **wpFluent()** with **wpFluentDB()** to work properly.
+
 ## Example
 ```PHP
-// You can use the global wpFluent() function
-$user = wpFluent()->table('users')->find(1);
+// You can use the global wpFluentDB() function
+$user = wpFluentDB()->table('users')->find(1);
 
 // Or, create a connection using $wpdb, only once.
 global $wpdb;
@@ -123,9 +125,9 @@ new \WpFluent\Connection($wpdb, ['prefix' => $wpdb->prefix], 'DB');
 // Run query
 $query = DB::table('my_table')->where('name', '=', 'admin');
 
-// Or, simply use the global wpFluent() function.
+// Or, simply use the global wpFluentDB() function.
 // It handles all the ncessary initial setup.
-wpFluent()->table('my_table')->where('name', '=', 'admin');
+wpFluentDB()->table('my_table')->where('name', '=', 'admin');
 ```
 
 
